@@ -1,0 +1,31 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container">
+    <h1>Painel da empresa</h1>
+
+    <p>Bem-vindo ao Moz Business!</p>
+
+    <div class="dashboard-actions">
+        <a href="{{ url_for('company_form') }}">
+            Cadastrar / editar empresa
+        </a>
+
+        <a href="{{ url_for('ad_form') }}">
+            Criar anúncio
+        </a>
+
+        <a href="{{ url_for('payments') }}">
+            Pagamentos e pacotes
+        </a>
+    </div>
+
+    {% if company %}
+        <h2>{{ company.name }}</h2>
+        <p>Estado: {{ company.status }}</p>
+        <p>Plano: {{ company.active_plan or 'Nenhum plano ativo' }}</p>
+    {% else %}
+        <p>Ainda não cadastrou a sua empresa.</p>
+    {% endif %}
+</div>
+{% endblock %}
