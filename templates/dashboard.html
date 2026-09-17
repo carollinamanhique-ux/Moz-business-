@@ -1,31 +1,96 @@
 {% extends "base.html" %}
 
 {% block content %}
+
 <div class="container">
-    <h1>Painel da empresa</h1>
 
-    <p>Bem-vindo ao Moz Business!</p>
+    <div class="formbox">
 
-    <div class="dashboard-actions">
-        <a href="{{ url_for('company_form') }}">
-            Cadastrar / editar empresa
-        </a>
+        <h1>Painel da empresa</h1>
 
-        <a href="{{ url_for('ad_form') }}">
-            Criar anúncio
-        </a>
+        <p>
+            Bem-vindo ao Moz Business,
+            {{ session.get('name', '') }}!
+        </p>
 
-        <a href="{{ url_for('payments') }}">
-            Pagamentos e pacotes
-        </a>
+        <h2>As minhas empresas</h2>
+
+        {% if companies %}
+
+            {% for company in companies %}
+
+            <div class="card">
+                <div class="pad">
+
+                    <h3>{{ company.name }}</h3>
+
+                    <p>
+                        <strong>Categoria:</strong>
+                        {{ company.category }}
+                    </p>
+
+                    <p>
+                        <strong>Cidade:</strong>
+                        {{ company.city }}
+                    </p>
+
+                    <p>
+                        <strong>Estado:</strong>
+                        {{ company.status }}
+                    </p>
+
+                    <p>
+                        <strong>Plano:</strong>
+                        {{ company.active_plan or 'Nenhum plano ativo' }}
+                    </p>
+
+                    <a href="{{ url_for('company', company_id=company.id) }}">
+                        Ver empresa
+                    </a>
+
+                    <br><br>
+
+                    <a href="{{ url_for('new_ad', company_id=company.id) }}">
+                        Criar anúncio
+                    </a>
+
+                </div>
+            </div>
+
+            {% endfor %}
+
+        {% else %}
+
+            <p>
+                Ainda não cadastrou nenhuma empresa.
+            </p>
+
+        {% endif %}
+
+        <h2>Ações</h2>
+
+        <div class="dashboard-actions">
+
+            <a href="{{ url_for('new_company') }}">
+                ➕ Cadastrar empresa
+            </a>
+
+            <a href="{{ url_for('payments') }}">
+                💳 Pagamentos e pacotes
+            </a>
+
+            <a href="{{ url_for('search') }}">
+                🔎 Pesquisar empresas
+            </a>
+
+            <a href="{{ url_for('logout') }}">
+                🚪 Sair
+            </a>
+
+        </div>
+
     </div>
 
-    {% if company %}
-        <h2>{{ company.name }}</h2>
-        <p>Estado: {{ company.status }}</p>
-        <p>Plano: {{ company.active_plan or 'Nenhum plano ativo' }}</p>
-    {% else %}
-        <p>Ainda não cadastrou a sua empresa.</p>
-    {% endif %}
 </div>
+
 {% endblock %}
