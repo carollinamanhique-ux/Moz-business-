@@ -1,6 +1,7 @@
 {% extends "base.html" %}
 
 {% block content %}
+
 <div class="container">
 
     <div class="formbox">
@@ -8,36 +9,145 @@
         <h1>Pagamentos e pacotes</h1>
 
         <p>
-            Escolha o pacote que deseja ativar para a sua empresa.
+            Escolha a empresa e o pacote que deseja ativar.
         </p>
 
-        <h2>Básico — 500 MT</h2>
-        <p>
-            A sua empresa aparece nos resultados de pesquisa
-            para que os clientes possam encontrá-la.
-        </p>
+        <h2>Pacotes</h2>
 
-        <h2>Premium — 700 MT</h2>
-        <p>
-            Inclui pesquisa e um perfil completo com fotos,
-            serviços ou produtos, contactos, WhatsApp,
-            Instagram, Facebook, TikTok, localização e horário.
-        </p>
+        {% for code, plan in plans.items() %}
 
-        <h2>Anúncio — 1.500 MT</h2>
-        <p>
-            Publicidade para empresas registadas.
-            O anúncio pode ser divulgado no Facebook e TikTok,
-            após aprovação.
-        </p>
+        <div class="card">
+            <div class="pad">
 
-        <p>
-            <strong>Vídeo:</strong> máximo de 30 segundos.
-        </p>
+                <h3>
+                    {{ plan.name }} —
+                    {{ plan.amount }} MT
+                </h3>
+
+                <p>
+                    {{ plan.description }}
+                </p>
+
+            </div>
+        </div>
+
+        {% endfor %}
 
         <hr>
 
-        <h2>Pagamento</h2>
+        <h2>Fazer pagamento</h2>
+
+        {% if companies %}
+
+        <form method="POST"
+              action="{{ url_for('payments') }}">
+
+            <label for="company_id">
+                Empresa
+            </label>
+
+            <select
+                id="company_id"
+                name="company_id"
+                required
+            >
+
+                <option value="">
+                    Selecione a empresa
+                </option>
+
+                {% for company in companies %}
+
+                <option value="{{ company.id }}">
+                    {{ company.name }}
+                </option>
+
+                {% endfor %}
+
+            </select>
+
+            <label for="plan_code">
+                Pacote
+            </label>
+
+            <select
+                id="plan_code"
+                name="plan_code"
+                required
+            >
+
+                <option value="">
+                    Selecione o pacote
+                </option>
+
+                {% for code, plan in plans.items() %}
+
+                <option value="{{ code }}">
+                    {{ plan.name }} — {{ plan.amount }} MT
+                </option>
+
+                {% endfor %}
+
+            </select>
+
+            <label for="method">
+                Método de pagamento
+            </label>
+
+            <select
+                id="method"
+                name="method"
+                required
+            >
+
+                <option value="">
+                    Selecione o método
+                </option>
+
+                {% for value, label in methods %}
+
+                <option value="{{ value }}">
+                    {{ label }}
+                </option>
+
+                {% endfor %}
+
+            </select>
+
+            <label for="payer_phone">
+                Número usado no pagamento
+            </label>
+
+            <input
+                type="tel"
+                id="payer_phone"
+                name="payer_phone"
+                placeholder="+258 84 000 0000"
+                required
+            >
+
+            <button type="submit">
+                Iniciar pagamento
+            </button>
+
+        </form>
+
+        {% else %}
+
+        <p>
+            A sua empresa ainda precisa de ser aprovada
+            antes de poder fazer um pagamento.
+        </p>
+
+        <a href="{{ url_for('new_company') }}">
+            Cadastrar empresa
+        </a>
+
+        {% endif %}
+
+        <hr>
+
+        <h2>Números oficiais</h2>
 
         <p>
             <strong>M-Pesa:</strong> 858804425
@@ -47,91 +157,62 @@
             <strong>e-Mola:</strong> 865742391
         </p>
 
-        <form method="POST" action="{{ url_for('payments') }}">
-
-            <label for="plan_code">
-                Escolha o pacote
-            </label>
-
-            <select id="plan_code" name="plan_code" required>
-
-                <option value="">
-                    Selecione um pacote
-                </option>
-
-                <option value="basico">
-                    Básico — 500 MT
-                </option>
-
-                <option value="premium">
-                    Premium — 700 MT
-                </option>
-
-                <option value="anuncio">
-                    Anúncio — 1.500 MT
-                </option>
-
-            </select>
-
-            <label for="payment_method">
-                Método de pagamento
-            </label>
-
-            <select
-                id="payment_method"
-                name="payment_method"
-                required
-            >
-                <option value="">
-                    Selecione o método
-                </option>
-
-                <option value="MPESA">
-                    M-Pesa
-                </option>
-
-                <option value="EMOLA">
-                    e-Mola
-                </option>
-            </select>
-
-            <label for="payer_phone">
-                Número usado para fazer o pagamento
-            </label>
-
-            <input
-                type="tel"
-                id="payer_phone"
-                name="payer_phone"
-                placeholder="Ex.: 84 000 0000"
-                required
-            >
-
-            <label for="reference">
-                Referência do pagamento
-            </label>
-
-            <input
-                type="text"
-                id="reference"
-                name="reference"
-                placeholder="Digite a referência da transação"
-                required
-            >
-
-            <button type="submit">
-                Enviar pagamento
-            </button>
-
-        </form>
-
         <p>
-            <strong>Importante:</strong>
-            o pacote só será ativado depois da confirmação
-            do pagamento.
+            O sistema inicia o pagamento através do
+            provedor configurado. O pacote só fica ativo
+            depois da confirmação do pagamento.
         </p>
+
+        {% if history %}
+
+        <hr>
+
+        <h2>Histórico de pagamentos</h2>
+
+        {% for payment in history %}
+
+        <div class="card">
+            <div class="pad">
+
+                <p>
+                    <strong>Empresa:</strong>
+                    {{ payment.company_name }}
+                </p>
+
+                <p>
+                    <strong>Pacote:</strong>
+                    {{ payment.plan_code }}
+                </p>
+
+                <p>
+                    <strong>Valor:</strong>
+                    {{ payment.amount_mzn }} MT
+                </p>
+
+                <p>
+                    <strong>Método:</strong>
+                    {{ payment.method }}
+                </p>
+
+                <p>
+                    <strong>Estado:</strong>
+                    {{ payment.status }}
+                </p>
+
+                <p>
+                    <strong>Referência:</strong>
+                    {{ payment.reference }}
+                </p>
+
+            </div>
+        </div>
+
+        {% endfor %}
+
+        {% endif %}
 
     </div>
 
 </div>
+
 {% endblock %}
