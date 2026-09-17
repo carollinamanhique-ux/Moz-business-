@@ -1,0 +1,26 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container">
+    <h1>Criar conta</h1>
+    <p>Crie a sua conta no Moz Business.</p>
+
+    <form method="POST" action="{{ url_for('register') }}">
+        <label for="username">Nome de utilizador</label>
+        <input type="text" id="username" name="username" required>
+
+        <label for="email">E-mail</label>
+        <input type="email" id="email" name="email" required>
+
+        <label for="password">Palavra-passe</label>
+        <input type="password" id="password" name="password" required>
+
+        <button type="submit">Criar conta</button>
+    </form>
+
+    <p>
+        Já tem uma conta?
+        <a href="{{ url_for('login') }}">Entrar</a>
+    </p>
+</div>
+{% endblock %}
