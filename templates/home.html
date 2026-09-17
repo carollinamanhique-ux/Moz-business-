@@ -1,0 +1,9 @@
+{% extends "base.html" %}{% block content %}
+<section class="hero"><div class="hero-inner"><small>MOZ BUSINESS</small><h1>Conectamos você às empresas, produtos e serviços de Moçambique.</h1><p>Encontre negócios e entre em contacto diretamente com quem oferece o que procura.</p>
+<form class="search" action="{{url_for('search')}}"><input name="q" placeholder="O que procura?"><input name="city" placeholder="Onde?"><button>Pesquisar</button></form></div></section>
+<main class="container">
+<section><div class="title"><h2>Anúncios em destaque</h2></div><div class="grid">{% for a in ads %}<article class="card">{% if a.video_filename %}<video controls preload="metadata" src="{{url_for('static',filename='uploads/'+a.video_filename)}}"></video>{% else %}<div class="video-placeholder">▶</div>{% endif %}<div class="pad"><b>{{a.title}}</b><p>{{a.company_name}} · {{a.city}}</p><span class="pill">até {{a.duration_seconds}}s</span></div></article>{% else %}<p>Nenhum anúncio aprovado ainda.</p>{% endfor %}</div></section>
+<section id="categorias"><div class="title"><h2>Categorias</h2></div><div class="categories">{% for c in categories %}<div>{{c}}</div>{% endfor %}</div></section>
+<section><div class="title"><h2>Empresas</h2></div><div class="grid">{% for c in companies %}<article class="card"><div class="pad"><h3>{{c.name}}</h3><p>{{c.category}} · {{c.city}}</p><p>{{c.description}}</p><a class="btn" href="{{url_for('company',company_id=c.id)}}">Ver empresa</a></div></article>{% endfor %}</div></section>
+<section class="cta"><div><h2>Tem uma empresa?</h2><p>Cadastre o seu negócio no Moz Business.</p></div><a class="btn" href="{{url_for('register')}}">Cadastrar empresa</a></section>
+</main>{% endblock %}
