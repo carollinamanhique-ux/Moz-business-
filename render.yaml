@@ -1,0 +1,19 @@
+services:
+  - type: web
+    name: moz-business
+    env: python
+    buildCommand: pip install -r requirements.txt
+    startCommand: gunicorn app:app
+    envVars:
+      - key: MOZ_BUSINESS_SECRET
+        generateValue: true
+      - key: DATABASE_URL
+        sync: false
+      - key: PAGAR_API_BASE_URL
+        value: https://api.pagar.co.mz/api/v1
+      - key: PAGAR_API_KEY
+        sync: false
+      - key: PAGAR_SIGNING_SECRET
+        sync: false
+      - key: PAGAR_WEBHOOK_SECRET
+        sync: false
