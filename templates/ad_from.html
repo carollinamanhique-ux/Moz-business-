@@ -1,0 +1,99 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container">
+
+    <div class="formbox">
+        <h1>Criar anúncio</h1>
+
+        <p>
+            Publique um anúncio da sua empresa no Moz Business.
+        </p>
+
+        <p>
+            <strong>Importante:</strong> o vídeo do anúncio pode ter
+            no máximo 30 segundos e o anúncio será analisado antes
+            da publicação.
+        </p>
+
+        <form method="POST"
+              action="{{ url_for('new_ad') }}"
+              enctype="multipart/form-data">
+
+            <label for="title">Título do anúncio</label>
+            <input
+                type="text"
+                id="title"
+                name="title"
+                placeholder="Ex.: Promoção especial"
+                required
+            >
+
+            <label for="description">Descrição</label>
+            <textarea
+                id="description"
+                name="description"
+                rows="5"
+                placeholder="Descreva o seu anúncio..."
+                required
+            ></textarea>
+
+            <label for="video">Vídeo do anúncio</label>
+            <input
+                type="file"
+                id="video"
+                name="video"
+                accept="video/*"
+            >
+
+            <small>
+                Vídeo máximo: 30 segundos.
+            </small>
+
+            <label for="duration_seconds">
+                Duração do vídeo (segundos)
+            </label>
+
+            <input
+                type="number"
+                id="duration_seconds"
+                name="duration_seconds"
+                min="1"
+                max="30"
+                placeholder="Ex.: 20"
+            >
+
+            <h3>Onde será divulgado?</h3>
+
+            <label>
+                <input
+                    type="checkbox"
+                    name="platforms"
+                    value="facebook"
+                >
+                Facebook
+            </label>
+
+            <label>
+                <input
+                    type="checkbox"
+                    name="platforms"
+                    value="tiktok"
+                >
+                TikTok
+            </label>
+
+            <p>
+                <strong>Nota:</strong> os anúncios pagos são destinados
+                ao Facebook e TikTok. A publicação depende de aprovação.
+            </p>
+
+            <button type="submit">
+                Enviar anúncio para aprovação
+            </button>
+
+        </form>
+    </div>
+
+</div>
+{% endblock %}
