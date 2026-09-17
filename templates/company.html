@@ -1,0 +1,67 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container">
+
+    <div class="formbox">
+
+        <h1>{{ company.name }}</h1>
+
+        <p>
+            {{ company.category }} · {{ company.city }}
+        </p>
+
+        <p>
+            {{ company.description }}
+        </p>
+
+        <h3>Contactos</h3>
+
+        <p>
+            WhatsApp:
+            {{ company.whatsapp or 'não informado' }}
+            <br>
+
+            Instagram:
+            {{ company.instagram or 'não informado' }}
+            <br>
+
+            Facebook:
+            {{ company.facebook or 'não informado' }}
+            <br>
+
+            TikTok:
+            {{ company.tiktok or 'não informado' }}
+        </p>
+
+        <h3>Anúncios</h3>
+
+        {% for a in ads %}
+
+        <div class="card">
+            <div class="pad">
+
+                <b>{{ a.title }}</b>
+
+                <p>{{ a.description }}</p>
+
+                {% if a.video_filename %}
+                <video
+                    controls
+                    src="{{ url_for('static', filename='uploads/' + a.video_filename) }}">
+                </video>
+                {% endif %}
+
+            </div>
+        </div>
+
+        {% else %}
+
+        <p>Nenhum anúncio aprovado.</p>
+
+        {% endfor %}
+
+    </div>
+
+</div>
+{% endblock %}
