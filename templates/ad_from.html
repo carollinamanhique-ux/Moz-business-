@@ -1,26 +1,36 @@
 {% extends "base.html" %}
 
 {% block content %}
+
 <div class="container">
 
     <div class="formbox">
+
         <h1>Criar anúncio</h1>
 
         <p>
-            Publique um anúncio da sua empresa no Moz Business.
+            Empresa:
+            <strong>{{ company.name }}</strong>
         </p>
 
         <p>
-            <strong>Importante:</strong> o vídeo do anúncio pode ter
-            no máximo 30 segundos e o anúncio será analisado antes
-            da publicação.
+            Crie o anúncio da sua empresa para divulgação.
+        </p>
+
+        <p>
+            <strong>Importante:</strong>
+            o vídeo pode ter no máximo 30 segundos.
+            O anúncio será analisado antes da publicação.
         </p>
 
         <form method="POST"
-              action="{{ url_for('new_ad') }}"
+              action="{{ url_for('new_ad', company_id=company.id) }}"
               enctype="multipart/form-data">
 
-            <label for="title">Título do anúncio</label>
+            <label for="title">
+                Título do anúncio
+            </label>
+
             <input
                 type="text"
                 id="title"
@@ -29,7 +39,10 @@
                 required
             >
 
-            <label for="description">Descrição</label>
+            <label for="description">
+                Descrição
+            </label>
+
             <textarea
                 id="description"
                 name="description"
@@ -38,54 +51,51 @@
                 required
             ></textarea>
 
-            <label for="video">Vídeo do anúncio</label>
+            <label for="video">
+                Vídeo do anúncio
+            </label>
+
             <input
                 type="file"
                 id="video"
                 name="video"
-                accept="video/*"
+                accept="video/mp4,video/webm,video/quicktime"
             >
 
             <small>
-                Vídeo máximo: 30 segundos.
+                Formatos aceites: MP4, WebM ou MOV.
+                Tamanho máximo: 50 MB.
             </small>
 
-            <label for="duration_seconds">
+            <label for="duration">
                 Duração do vídeo (segundos)
             </label>
 
             <input
                 type="number"
-                id="duration_seconds"
-                name="duration_seconds"
+                id="duration"
+                name="duration"
                 min="1"
                 max="30"
                 placeholder="Ex.: 20"
+                required
             >
 
-            <h3>Onde será divulgado?</h3>
-
-            <label>
-                <input
-                    type="checkbox"
-                    name="platforms"
-                    value="facebook"
-                >
-                Facebook
+            <label for="destination_url">
+                Link de destino
             </label>
 
-            <label>
-                <input
-                    type="checkbox"
-                    name="platforms"
-                    value="tiktok"
-                >
-                TikTok
-            </label>
+            <input
+                type="url"
+                id="destination_url"
+                name="destination_url"
+                placeholder="https://..."
+            >
 
             <p>
-                <strong>Nota:</strong> os anúncios pagos são destinados
-                ao Facebook e TikTok. A publicação depende de aprovação.
+                <strong>Divulgação:</strong>
+                os anúncios pagos são destinados ao
+                Facebook e TikTok, sujeitos a aprovação.
             </p>
 
             <button type="submit">
@@ -93,7 +103,9 @@
             </button>
 
         </form>
+
     </div>
 
 </div>
+
 {% endblock %}
