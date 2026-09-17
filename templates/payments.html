@@ -1,0 +1,137 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container">
+
+    <div class="formbox">
+
+        <h1>Pagamentos e pacotes</h1>
+
+        <p>
+            Escolha o pacote que deseja ativar para a sua empresa.
+        </p>
+
+        <h2>Básico — 500 MT</h2>
+        <p>
+            A sua empresa aparece nos resultados de pesquisa
+            para que os clientes possam encontrá-la.
+        </p>
+
+        <h2>Premium — 700 MT</h2>
+        <p>
+            Inclui pesquisa e um perfil completo com fotos,
+            serviços ou produtos, contactos, WhatsApp,
+            Instagram, Facebook, TikTok, localização e horário.
+        </p>
+
+        <h2>Anúncio — 1.500 MT</h2>
+        <p>
+            Publicidade para empresas registadas.
+            O anúncio pode ser divulgado no Facebook e TikTok,
+            após aprovação.
+        </p>
+
+        <p>
+            <strong>Vídeo:</strong> máximo de 30 segundos.
+        </p>
+
+        <hr>
+
+        <h2>Pagamento</h2>
+
+        <p>
+            <strong>M-Pesa:</strong> 858804425
+        </p>
+
+        <p>
+            <strong>e-Mola:</strong> 865742391
+        </p>
+
+        <form method="POST" action="{{ url_for('payments') }}">
+
+            <label for="plan_code">
+                Escolha o pacote
+            </label>
+
+            <select id="plan_code" name="plan_code" required>
+
+                <option value="">
+                    Selecione um pacote
+                </option>
+
+                <option value="basico">
+                    Básico — 500 MT
+                </option>
+
+                <option value="premium">
+                    Premium — 700 MT
+                </option>
+
+                <option value="anuncio">
+                    Anúncio — 1.500 MT
+                </option>
+
+            </select>
+
+            <label for="payment_method">
+                Método de pagamento
+            </label>
+
+            <select
+                id="payment_method"
+                name="payment_method"
+                required
+            >
+                <option value="">
+                    Selecione o método
+                </option>
+
+                <option value="MPESA">
+                    M-Pesa
+                </option>
+
+                <option value="EMOLA">
+                    e-Mola
+                </option>
+            </select>
+
+            <label for="payer_phone">
+                Número usado para fazer o pagamento
+            </label>
+
+            <input
+                type="tel"
+                id="payer_phone"
+                name="payer_phone"
+                placeholder="Ex.: 84 000 0000"
+                required
+            >
+
+            <label for="reference">
+                Referência do pagamento
+            </label>
+
+            <input
+                type="text"
+                id="reference"
+                name="reference"
+                placeholder="Digite a referência da transação"
+                required
+            >
+
+            <button type="submit">
+                Enviar pagamento
+            </button>
+
+        </form>
+
+        <p>
+            <strong>Importante:</strong>
+            o pacote só será ativado depois da confirmação
+            do pagamento.
+        </p>
+
+    </div>
+
+</div>
+{% endblock %}
