@@ -1,0 +1,103 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container">
+
+    <div class="formbox">
+        <h1>Cadastrar empresa</h1>
+
+        <p>
+            Preencha os dados da sua empresa.
+            Depois do envio, a empresa será analisada para aprovação.
+        </p>
+
+        <form method="POST" action="{{ url_for('new_company') }}">
+
+            <label for="name">Nome da empresa</label>
+            <input
+                type="text"
+                id="name"
+                name="name"
+                placeholder="Ex.: Moz Business Lda"
+                required
+            >
+
+            <label for="category">Categoria</label>
+            <select id="category" name="category" required>
+                <option value="">Selecione uma categoria</option>
+
+                {% for category in categories %}
+                <option value="{{ category }}">
+                    {{ category }}
+                </option>
+                {% endfor %}
+
+            </select>
+
+            <label for="city">Cidade</label>
+            <input
+                type="text"
+                id="city"
+                name="city"
+                placeholder="Ex.: Maputo"
+                required
+            >
+
+            <label for="description">Descrição da empresa</label>
+            <textarea
+                id="description"
+                name="description"
+                rows="5"
+                placeholder="Explique os produtos ou serviços da sua empresa..."
+                required
+            ></textarea>
+
+            <label for="phone">Telefone</label>
+            <input
+                type="tel"
+                id="phone"
+                name="phone"
+                placeholder="Ex.: 84 000 0000"
+            >
+
+            <label for="whatsapp">WhatsApp</label>
+            <input
+                type="tel"
+                id="whatsapp"
+                name="whatsapp"
+                placeholder="Ex.: 84 000 0000"
+            >
+
+            <label for="instagram">Instagram</label>
+            <input
+                type="url"
+                id="instagram"
+                name="instagram"
+                placeholder="https://instagram.com/..."
+            >
+
+            <label for="facebook">Facebook</label>
+            <input
+                type="url"
+                id="facebook"
+                name="facebook"
+                placeholder="https://facebook.com/..."
+            >
+
+            <label for="tiktok">TikTok</label>
+            <input
+                type="url"
+                id="tiktok"
+                name="tiktok"
+                placeholder="https://tiktok.com/@..."
+            >
+
+            <button type="submit">
+                Cadastrar empresa
+            </button>
+
+        </form>
+    </div>
+
+</div>
+{% endblock %}
