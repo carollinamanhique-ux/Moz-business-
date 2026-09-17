@@ -1,0 +1,65 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container">
+
+    <div class="formbox">
+        <h1>Pesquisar empresas</h1>
+
+        <form method="GET" action="{{ url_for('search') }}">
+            <label for="q">O que você procura?</label>
+
+            <input
+                type="text"
+                id="q"
+                name="q"
+                value="{{ request.args.get('q', '') }}"
+                placeholder="Ex.: restaurante, loja, salão..."
+            >
+
+            <button type="submit">
+                Pesquisar
+            </button>
+        </form>
+    </div>
+
+    <h2>Resultados</h2>
+
+    {% if companies %}
+
+        {% for company in companies %}
+
+        <div class="card">
+            <div class="pad">
+
+                <h3>{{ company.name }}</h3>
+
+                {% if company.category %}
+                <p><strong>Categoria:</strong> {{ company.category }}</p>
+                {% endif %}
+
+                {% if company.city %}
+                <p><strong>Localização:</strong> {{ company.city }}</p>
+                {% endif %}
+
+                {% if company.description %}
+                <p>{{ company.description }}</p>
+                {% endif %}
+
+                <a href="{{ url_for('company', company_id=company.id) }}">
+                    Ver empresa
+                </a>
+
+            </div>
+        </div>
+
+        {% endfor %}
+
+    {% else %}
+
+        <p>Nenhuma empresa encontrada.</p>
+
+    {% endif %}
+
+</div>
+{% endblock %}
