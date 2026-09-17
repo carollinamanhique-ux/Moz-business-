@@ -1,0 +1,183 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<div class="container">
+
+    <div class="formbox">
+
+        <h1>Painel do administrador</h1>
+
+        <p>
+            Aqui pode analisar empresas e anúncios enviados
+            para aprovação.
+        </p>
+
+        <hr>
+
+        <h2>Empresas</h2>
+
+        {% if companies %}
+
+            {% for company in companies %}
+
+            <div class="card">
+                <div class="pad">
+
+                    <h3>{{ company.name }}</h3>
+
+                    <p>
+                        <strong>Categoria:</strong>
+                        {{ company.category }}
+                    </p>
+
+                    <p>
+                        <strong>Cidade:</strong>
+                        {{ company.city }}
+                    </p>
+
+                    <p>
+                        <strong>Proprietário:</strong>
+                        {{ company.owner_email }}
+                    </p>
+
+                    <p>
+                        <strong>Estado:</strong>
+                        {{ company.status }}
+                    </p>
+
+                    {% if company.status == "pending" %}
+
+                    <form
+                        method="POST"
+                        action="{{ url_for(
+                            'moderate_company',
+                            company_id=company.id,
+                            action='approve'
+                        ) }}"
+                        style="display:inline;"
+                    >
+                        <button type="submit">
+                            Aprovar empresa
+                        </button>
+                    </form>
+
+                    <form
+                        method="POST"
+                        action="{{ url_for(
+                            'moderate_company',
+                            company_id=company.id,
+                            action='reject'
+                        ) }}"
+                        style="display:inline;"
+                    >
+                        <button type="submit">
+                            Rejeitar empresa
+                        </button>
+                    </form>
+
+                    {% endif %}
+
+                </div>
+            </div>
+
+            {% endfor %}
+
+        {% else %}
+
+            <p>Nenhuma empresa registada.</p>
+
+        {% endif %}
+
+        <hr>
+
+        <h2>Anúncios</h2>
+
+        {% if ads %}
+
+            {% for ad in ads %}
+
+            <div class="card">
+                <div class="pad">
+
+                    <h3>{{ ad.title }}</h3>
+
+                    <p>
+                        <strong>Empresa:</strong>
+                        {{ ad.company_name }}
+                    </p>
+
+                    <p>
+                        {{ ad.description }}
+                    </p>
+
+                    <p>
+                        <strong>Duração:</strong>
+                        {{ ad.duration_seconds }} segundos
+                    </p>
+
+                    <p>
+                        <strong>Estado:</strong>
+                        {{ ad.status }}
+                    </p>
+
+                    {% if ad.video_filename %}
+
+                    <video
+                        controls
+                        src="{{ url_for(
+                            'static',
+                            filename='uploads/' + ad.video_filename
+                        ) }}"
+                    ></video>
+
+                    {% endif %}
+
+                    {% if ad.status == "pending" %}
+
+                    <form
+                        method="POST"
+                        action="{{ url_for(
+                            'moderate_ad',
+                            ad_id=ad.id,
+                            action='approve'
+                        ) }}"
+                        style="display:inline;"
+                    >
+                        <button type="submit">
+                            Aprovar anúncio
+                        </button>
+                    </form>
+
+                    <form
+                        method="POST"
+                        action="{{ url_for(
+                            'moderate_ad',
+                            ad_id=ad.id,
+                            action='reject'
+                        ) }}"
+                        style="display:inline;"
+                    >
+                        <button type="submit">
+                            Rejeitar anúncio
+                        </button>
+                    </form>
+
+                    {% endif %}
+
+                </div>
+            </div>
+
+            {% endfor %}
+
+        {% else %}
+
+            <p>Nenhum anúncio registado.</p>
+
+        {% endif %}
+
+    </div>
+
+</div>
+
+{% endblock %}
